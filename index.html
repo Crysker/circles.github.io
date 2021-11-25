@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2DBGC</title>
+<style> body{
+    margin: 0;
+    background: linear-gradient(180deg, #5284a5,rgba(161, 193, 202, 0.836));
+}
+.wrapper{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height: 100vh;
+gap: 12px;
+
+}
+#canvas{
+background-color: rgb(255, 255, 255);
+}
+
+.name{
+font-size: 50px;
+
+}
+.button {
+    display: flex;
+    gap: 50px;
+    margin-top: 15px;
+}
+
+.actionButton {
+    border: 1px solid white;
+    border-radius: 0 10px 0 10px;
+    color: white;
+    padding: 5px 15px 5px 15px;
+    cursor: pointer;
+} 
+</style>
+</head>
+
+<body>
+    
+
+    <div class="wrapper">
+        <canvas id="canvas"> </canvas>
+        <div class="name">🕹2D Browser Game Coding:</div>
+    </div>
+    <div class="button">
+        <div class="actionButton start" onclick='start()'>START</div>
+        <div class="actionButton stop" onclick='stop()'>STOP</div>
+    </div>
+
+</div>
+
+    
+    
+   <script>
+       let context;
+let ticks = 0;
+let lastTickTimestamp;
+let x = 0;
+let radius = 0;
+let angle = 0;
+
+function randomNumberBetween(minRandomNumber, maxRandomNumber) {
+    return Math.floor(Math.random() * (maxRandomNumber - minRandomNumber + 1) + minRandomNumber);
+  }
+  
+
+  function getRandomColor() {
+  
+    let randomRed = randomNumberBetween(0, 255);
+    let randomGreen = randomNumberBetween(0, 255);
+    let randomBlue = randomNumberBetween(0, 255);
+    let randomAlpha = (Math.random() + 0.3).toFixed(2);
+  
+    return `rgba(${randomRed}, ${randomGreen}, ${randomBlue}, ${randomAlpha})`;
+  }
+
+
+
+const CONFIG = {
+    width: 800,
+    height:800
+}
+
+
+const init = () =>{
+     let canvas = document.getElementById("canvas");
+     context = canvas.getContext("2d");
+
+    canvas.setAttribute("width",CONFIG.width);
+    canvas.setAttribute("height",CONFIG.height);
+    lastTickTimestamp = performance.now();
+    render();
+
+
+
+}
+
+const render = (timestamp) => {
+
+    // let timePassedSinceLastRender = performance.now() - lastTickTimestamp;
+    // window.timePassedSinceLastRender = timePassedSinceLastRender
+    // x = x + timePassedSinceLastRender / 4;
+    // context.clearRect(0, 0, CONFIG.width, CONFIG.height)
+    radius = 5;
+    angle += (Math.PI * 2) / 50;
+    context.translate(CONFIG.width / 2 + radius * Math.cos(angle) , CONFIG.height / 2 + radius * Math.sin(angle)) ; //translate to center of canvas
+    context.rotate((Math.PI / 350)); //rotate 
+    context.translate(-CONFIG.width / 2, -CONFIG.height /2 ); //translate center back
+    
+    context.beginPath();
+    context.fillStyle = getRandomColor();
+    context.arc(CONFIG.width / 8, 350, 20, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+    timeFrame = requestAnimationFrame(render);
+
+    }
+window.addEventListener("load",()=>{
+    init();
+})
+
+function start() {
+    timeFrame = requestAnimationFrame();
+};
+function stop() {
+    cancelAnimationFrame(render);
+  };
+//if you read this you are cool :)
+   </script>
+</body>
+</html> 
+
+ 
